@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Danh sách sản phẩm</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Danh sách sản phẩm</h1>
+
+    <!-- Form thêm sản phẩm -->
+    <section class="product-form">
+        <h3>Thêm sản phẩm mới</h3>
+        <form th:action="@{/product/add}" th:object="${productForm}" method="post">
+            <div class="form-group">
+                <label for="ten">Tên sản phẩm:</label>
+                <input type="text" id="ten" th:field="*{ten}" placeholder="Nhập tên sản phẩm" />
+            </div>
+
+            <div class="form-group">
+                <label for="gia_san_pham">Giá sản phẩm:</label>
+                <input type="text" id="gia_san_pham" th:field="*{productForm.giaSanPham}" placeholder="Nhập giá sản phẩm" />
+            </div>
+
+            <div class="form-group">
+                <label for="mo_ta">Mô tả:</label>
+                <textarea id="mo_ta" th:field="*{moTa}" required placeholder="Nhập mô tả sản phẩm"></textarea>
+            </div>
+
+            <button type="submit">Thêm sản phẩm</button>
+        </form>
+    </section>
+
+    <hr>
+
+    <!-- Bảng danh sách sản phẩm -->
+    <section class="product-list">
+        <h3>Danh sách sản phẩm</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên</th>
+                <th>Giá</th>
+                <th>Mô tả</th>
+                <th>Thao tác</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.id}"></td>
+                <td th:text="${product.ten}"></td>
+                <td th:text="${product.giaSanPham}"></td>
+                <td th:text="${product.moTa}"></td>
+                <td class="actions">
+                    <!-- Cập nhật sản phẩm -->
+                    <form th:action="@{/product/update/{id}(id=${product.id})}" method="post">
+                        <button type="submit">Cập nhật</button>
+                    </form>
+                    <!-- Xóa sản phẩm -->
+                    <form th:action="@{/product/delete/{id}(id=${product.id})}" method="post"
+                          onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                        <button type="submit" class="confirm">Xóa</button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </section>
+</div>
+
+</body>
+</html>
